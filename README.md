@@ -35,3 +35,11 @@ mylinks/
 
 ---
 
+## Resumen de Comandos Aprendidos
+
+Terminal
+| Comando | Qué hace | |———|———-| | pwd | Muestra directorio actual | | ls | Lista contenido de carpeta | | cd carpeta | Entra a una carpeta | | cd .. | Sube un nivel | | mkdir nombre | Crea una carpeta | | code . | Abre VS Code aquí |
+
+Git
+| Comando | Qué hace | |———|———-| | git clone URL | Copia repositorio a tu PC | | git status | Muestra estado de cambios | | git add archivo | Prepara archivo para commit | | git commit -m "msg" | Guarda cambios con mensaje | | git push | Sube commits a GitHub |
+
