@@ -36,13 +36,13 @@ body {
 
 /* --- NOMBRE --- */
 .name {
-  font-size: 28px;
+  font-size: 1.75rem;
   margin-top: 16px;
 }
 
 /* --- BIO --- */
 .bio {
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: #a0a0b0;
   margin-top: 8px;
 }
@@ -60,5 +60,16 @@ body {
   border: 1px solid #2a2a38;
   color: #ffffff;
   text-decoration: none;
-  font-size: 15px;
+  font-size: 0.9375rem;
+}
+
+
+@media (min-width: 768px) {
+  .card {
+    max-width: 700px;
+  }
+
+  .name {
+    font-size: 5rem;
+  }
 }
