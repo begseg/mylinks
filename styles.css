@@ -228,7 +228,13 @@ a:focus-visible, button:focus-visible {
 }
 
 .icon-btn { width: 44px; height: 44px; padding: 0; --sy: 26px; --sb: 22px; --glow-hover: 9px; }
-.copiar { padding: 4px 14px; min-height: 32px; font-size: 0.75rem; --sy: 20px; --sb: 16px; --glow-hover: 8px; border-radius: 10px; }
+.copiar { gap: 6px; padding: 4px 14px; min-height: 32px; font-size: 0.75rem; --sy: 20px; --sb: 16px; --glow-hover: 8px; border-radius: 10px; }
+
+/* Iconos Font Awesome dentro de los botones */
+.btn-icon { flex: none; font-size: 1.15rem; filter: drop-shadow(1px 1px 1px #000); }
+.btn-primario .btn-icon { font-size: 1.25rem; }
+.icon-btn .btn-icon { font-size: 1.1rem; }
+.copiar .btn-icon { font-size: 0.8rem; }
 
 /* Cuadrícula de accesos */
 .grid-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 40px; }
