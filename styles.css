@@ -1,75 +1,291 @@
-/* =============================================
-   MYLINKS - ESTILOS BASE
-   En las próximas clases construirás encima
-   de estos estilos para mejorar el diseño.
-   ============================================= */
+/* Reset base (equivalente al de la vista previa) */
+img { max-width: 100%; }
+[hidden] { display: none !important; }
 
-/* --- ESTILOS GLOBALES --- */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* Layout: tarjeta de perfil central con halo azul, y debajo una cuadrícula de 6 accesos (3x2 en escritorio, 1 columna en móvil). Botones con acabado "luz de neón" en tonos azules. */
+:root {
+  --bg-principal: #0F172A;
+  --acento: #3B82F6;
+  --texto: #F8FAFC;
+  --texto-suave: #94A3B8;
+  --superficie: #131C31;
+  --superficie-2: #1B2540;
+  --borde: rgba(148, 163, 184, 0.18);
+  --sombra: 0px 8px 24px rgba(0, 0, 0, 0.4);
+  --azul-hielo: #BFDBFE;
+  --azul-claro: #93C5FD;
+  --azul-medio: #60A5FA;
+  --azul-fuerte: #2563EB;
+  --azul-profundo: #1D4ED8;
+  --azul-noche: #1E3A8A;
+  --sombra-interna: #020617;
+  --font-display: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  color-scheme: dark;
 }
 
+html { background: var(--bg-principal); }
 body {
-  font-family: 'Poppins', sans-serif;
-  background-color: #042285;
-  color: #ffffff;
-  min-height: 100vh;
-  display: flex;
+  margin: 0;
+  background: var(--bg-principal);
+  color: var(--texto);
+  font-family: var(--font-display);
+  font-size: 16px;
+  line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 24px 40px;
+  min-height: 100%;
+  overflow-x: hidden;
+  position: relative;
+}
+/* Retícula tenue de fondo */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(59,130,246,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.07) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 60% 55% at 50% 30%, #000 20%, transparent 75%);
+          mask-image: radial-gradient(ellipse 60% 55% at 50% 30%, #000 20%, transparent 75%);
+}
+.shell { position: relative; z-index: 1; max-width: 960px; margin-inline: auto; }
+
+a { color: inherit; text-decoration: none; }
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--azul-claro);
+  outline-offset: 4px;
+  border-radius: 12px;
+}
+
+.wordmark { font-weight: 600; letter-spacing: 0.08em; font-size: 0.95rem; text-transform: uppercase; }
+
+/* Tarjeta principal */
+.hero {
+  position: relative;
+  margin-top: 72px;
+  padding: 76px 28px 36px;
+  border-radius: 24px;
+  border: 1px solid var(--borde);
+  background: linear-gradient(180deg, rgba(30,41,64,0.78), rgba(19,28,49,0.9));
+  box-shadow: var(--sombra), 0 0 60px rgba(59,130,246,0.14);
+  text-align: center;
+}
+.avatar {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -50%);
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 4px solid var(--acento);
+  background: radial-gradient(circle at 30% 25%, #1E3A8A, #0B1226 70%);
+  box-shadow: 0 0 0 6px rgba(59,130,246,0.15), 0 0 32px rgba(59,130,246,0.45);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.avatar span { font-size: 2.6rem; font-weight: 600; letter-spacing: 0.04em; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.rol { color: #94A3C8; font-weight: 500; font-size: 1.15rem; }
+.bio { color: #CBD5E1; max-width: 56ch; margin-inline: auto; font-size: 0.95rem; text-wrap: pretty; }
+.eyebrow { color: var(--texto-suave); font-size: 0.8rem; letter-spacing: 0.04em; }
+
+/* ============================================================
+   BOTONES DE ENLACE (estilo Uiverse adaptado a la paleta azul)
+   Cara con degradado + sombras internas, halo cónico detrás.
+   Capas: ::before (z -2) = halo, ::after (z -1) = cara.
+   ============================================================ */
+.btn, .icon-btn, .copiar {
+  /* Cara: degradado horizontal de 3 azules */
+  --g1: var(--azul-claro);
+  --g2: var(--acento);
+  --g3: var(--azul-profundo);
+  /* Halo cónico: 3 azules */
+  --c1: var(--azul-claro);
+  --c2: var(--acento);
+  --c3: var(--azul-profundo);
+  --glow-rest: 0px;
+  --glow-hover: 15px;
+  --glow-opacity: 1;
+  --sy: 35px;   /* desplazamiento de la sombra interna oscura */
+  --sb: 30px;   /* difuminado de la sombra interna oscura */
+
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--texto);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-shadow: 1px 1px 1px #000;
+  transition: transform 0.3s ease;
+}
+.btn::before, .icon-btn::before, .copiar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  border-radius: inherit;
+  z-index: -2;
+  background: conic-gradient(
+    rgba(0,0,0,0) 80deg,
+    var(--c1),
+    var(--c2),
+    var(--c3),
+    rgba(0,0,0,0) 280deg
+  );
+  filter: blur(var(--glow-rest));
+  opacity: var(--glow-opacity);
+  transition: filter 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+}
+.btn::after, .icon-btn::after, .copiar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: -1;
+  background: linear-gradient(90deg, var(--g1), var(--g2), var(--g3));
+  box-shadow:
+    inset 0px 0px 5px rgba(219, 234, 254, 0.66),
+    inset 0px var(--sy) var(--sb) var(--sombra-interna),
+    0px 5px 10px rgba(2, 6, 23, 0.8);
+  transition: box-shadow 0.3s ease;
+}
+.btn:hover::before, .icon-btn:hover::before, .copiar:hover::before {
+  filter: blur(var(--glow-hover));
+}
+.btn:active, .icon-btn:active, .copiar:active { transform: translateY(3px); }
+.btn:active::before, .icon-btn:active::before, .copiar:active::before {
+  filter: blur(5px);
+  transform: translateY(1px);
+}
+.btn:active::after, .icon-btn:active::after, .copiar:active::after {
+  box-shadow:
+    inset 0px 0px 5px rgba(219, 234, 254, 0.66),
+    inset 0px var(--sy) var(--sb) var(--sombra-interna);
 }
 
-/* --- TARJETA PRINCIPAL --- */
-.card {
-  width: 90%;
-  max-width: 400px;
-  text-align: center;
-  padding: 40px 20px;
+/* Principal (GitHub): más brillo, halo permanente, más grande */
+.btn-primario {
+  --g1: var(--azul-hielo);
+  --g2: var(--azul-medio);
+  --g3: var(--acento);
+  --c1: var(--azul-hielo);
+  --c2: var(--acento);
+  --c3: var(--azul-fuerte);
+  --glow-rest: 8px;
+  --glow-hover: 22px;
+  --sy: 32px;
+  --sb: 24px;
+  min-height: 52px;
+  padding: 14px 28px;
+  font-weight: 600;
+}
+.btn-primario:hover { transform: translateY(-1px); }
+.btn-primario:active { transform: translateY(3px); }
+
+/* Secundarios: mismo estilo, azules más oscuros y halo contenido */
+.btn-secundario, .icon-btn, .copiar {
+  --g1: var(--azul-noche);
+  --g2: var(--azul-profundo);
+  --g3: var(--azul-fuerte);
+  --c1: var(--acento);
+  --c2: var(--azul-profundo);
+  --c3: var(--azul-noche);
+  --glow-hover: 10px;
+  --glow-opacity: 0.75;
+}
+.btn-secundario { min-height: 52px; padding: 14px 24px; --sy: 32px; --sb: 24px; }
+.btn-secundario::after, .icon-btn::after, .copiar::after {
+  box-shadow:
+    inset 0px 0px 5px rgba(219, 234, 254, 0.45),
+    inset 0px 0px 0px 1px rgba(147, 197, 253, 0.14),
+    inset 0px var(--sy) var(--sb) var(--sombra-interna),
+    0px 5px 10px rgba(2, 6, 23, 0.8);
+}
+.btn-secundario:active::after, .icon-btn:active::after, .copiar:active::after {
+  box-shadow:
+    inset 0px 0px 5px rgba(219, 234, 254, 0.45),
+    inset 0px 0px 0px 1px rgba(147, 197, 253, 0.14),
+    inset 0px var(--sy) var(--sb) var(--sombra-interna);
 }
 
-/* --- FOTO DE PERFIL --- */
-.avatar {
-  border-radius: 50%;
+.icon-btn { width: 44px; height: 44px; padding: 0; --sy: 26px; --sb: 22px; --glow-hover: 9px; }
+.copiar { padding: 4px 14px; min-height: 32px; font-size: 0.75rem; --sy: 20px; --sb: 16px; --glow-hover: 8px; border-radius: 10px; }
+
+/* Cuadrícula de accesos */
+.grid-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 40px; }
+.tile {
+  min-width: 0;
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid var(--borde);
+  background: var(--superficie);
+  box-shadow: var(--sombra);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.tile:hover, .tile:focus-within {
+  transform: translateY(-3px);
+  border-color: rgba(59,130,246,0.6);
+  box-shadow: var(--sombra), 0 0 24px rgba(59,130,246,0.2);
+}
+a.tile { cursor: pointer; }
+.tile-head { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 1rem; }
+.tile-head svg { color: var(--acento); flex: none; }
+.tile-sub { color: var(--texto-suave); font-size: 0.875rem; margin: 0; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.chips li {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--superficie-2);
+  border: 1px solid var(--borde);
+  font-size: 0.8rem;
+  font-weight: 500;
 }
 
-/* --- NOMBRE --- */
-.name {
-  font-size: 1.75rem;
-  margin-top: 16px;
+.timeline { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.timeline li { display: flex; align-items: center; gap: 12px; font-size: 0.875rem; color: var(--texto-suave); }
+.timeline i { width: 9px; height: 9px; border-radius: 50%; background: var(--acento); flex: none; box-shadow: 0 0 10px rgba(59,130,246,0.7); }
+.timeline li:last-child i { background: #475569; box-shadow: none; }
+.timeline b { color: var(--texto); font-weight: 500; }
+
+.icon-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+
+.correo-fila { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.correo-texto { font-size: 0.85rem; color: #CBD5E1; user-select: all; overflow-wrap: anywhere; min-width: 0; }
+
+.estado { min-height: 1.2em; font-size: 0.8rem; color: #93C5FD; margin: 0; }
+
+.pie { margin-top: 40px; text-align: center; color: #64748B; font-size: 0.8rem; }
+
+@media (max-width: 860px) {
+  .grid-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-
-/* --- BIO --- */
-.bio {
-  font-size: 0.9375rem;
-  color: #a0a0b0;
-  margin-top: 8px;
+@media (max-width: 560px) {
+  .hero { margin-top: 64px; padding: 72px 18px 28px; }
+  .grid-links { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .acciones { flex-direction: column; align-items: stretch; gap: 18px !important; }
+  .btn { width: 100%; }
 }
-
-/* --- CONTENEDOR DE ENLACES --- */
-.links {
-  margin-top: 24px;
-}
-
-/* --- CADA ENLACE --- */
-.link {
-  display: block;
-  padding: 14px;
-  margin-top: 12px;
-  border: 1px solid #2a2a38;
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 0.9375rem;
-}
-
-
-@media (min-width: 768px) {
-  .card {
-    max-width: 700px;
-  }
-
-  .name {
-    font-size: 5rem;
-  }
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+  .tile:hover, .btn-primario:hover { transform: none !important; }
 }
